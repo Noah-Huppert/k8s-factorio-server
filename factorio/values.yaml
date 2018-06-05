@@ -1,4 +1,12 @@
-replicaCount: 1
+# operatingMode: Function chart should provide
+#
+# Allows game saves to be loaded to / from the server and for those saves to 
+# be used in a Factorio multiplayer session.
+#
+# Valid values:
+#   - ftp: Provides an FTP server with access to the game saves directory
+#   - factorio: Provides a Factorio multiplayer server
+operatingMode: "factorio"
 
 image:
   repository: dtandersen/factorio

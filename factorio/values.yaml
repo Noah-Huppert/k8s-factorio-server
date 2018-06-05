@@ -1,0 +1,15 @@
+replicaCount: 1
+
+image:
+  repository: dtandersen/factorio
+  tag: stable
+  pullPolicy: IfNotPresent
+
+ingress:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "factorio.noahh.io., factorio.noahhuppert.com."
+    kubernetes.io/ingress.class: "gce"
+  hosts:
+    - factorio.noahh.io
+    - factorio.noahhuppert.com
+

@@ -1,0 +1,54 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: {{ template "factorio.fullname" . }}
+  labels:
+    app: {{ template "factorio.name" . }}
+    chart: {{ template "factorio.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  serviceName: {{ template "factorio.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "factorio.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "factorio.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: factorio-udp
+              containerPort: 34197
+              protocol: UDP
+            - name: factorio-tcp
+              containerPort: 27015
+              protocol: TCP
+          volumeMounts:
+            - name: factorio-saves
+              mountPath: /factorio/saves
+      volumes:
+        - name: factorio-saves
+          persistentVolumeClaim:
+            claimName: {{ template "factorio.fullname" . }}-saves
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ template "factorio.fullname" . }}-saves
+      labels:
+        app: {{ template "factorio.name" . }}
+        chart: {{ template "factorio.chart" . }}
+        release: {{ .Release.Name }}
+        heritage: {{ .Release.Service }}
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: "1Gi"

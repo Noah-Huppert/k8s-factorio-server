@@ -1,9 +1,10 @@
+{{ if .Values.operatingMode == "factorio" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "factorio.fullname" . }}
+  name: {{ template "factorio.fullname" . }}-multiplayer-server
   labels:
-    app: {{ template "factorio.name" . }}
+    app: {{ template "factorio.name" . }}-multiplayer-server
     chart: {{ template "factorio.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -20,5 +21,6 @@ spec:
       targetPort: 27015
       protocol: TCP
   selector:
-    app: {{ template "factorio.name" . }}
+    app: {{ template "factorio.name" . }}-multiplayer-server
     release: {{ .Release.Name }}
+{{ end }}

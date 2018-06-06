@@ -25,8 +25,11 @@ To access the saves directory used by the Factorio server run the chart in
 This will stop the hosting of the multiplayer Factorio server and start an 
 FTP server with access to the game saves directory.  
 
-Simply FTP into the address of the Kubernetes ingress object made by the chart. 
-Then place save files in the root directory of the FTP server.  
+Then make an FTP connection to the address of the Kubernetes ingress object 
+using the credentials in the `ftp.ftp` section of the `factorio/values.yaml` 
+file.  
+
+Put save files in the root directory of this FTP server.  
 
 You can launch the chart with the correct operating mode setting by running: 
 

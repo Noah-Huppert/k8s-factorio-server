@@ -1,0 +1,41 @@
+{{ if .Values.operatingMode == "ftp" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "factorio.fullname" . }}-ftp-server
+  labels:
+    app: {{ template "factorio.name" . }}-ftp-server
+    chart: {{ template "factorio.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "factorio.name" . }}-ftp-server
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "factorio.name" . }}-ftp-server
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - image: "{{ .Values.ftp.image.repository }}:{{ .Values.ftp.image.tag }}"
+          name: {{ .Chart.Name }}-ftp-server
+          env:
+            - name: FTP_USER
+              value: {{ .Values.ftp.ftp.username  }}
+            - name: FTP_PASS
+              value: {{ .Values.ftp.ftp.password }}
+          ports:
+            - containerPort: 21
+              name: ftp
+          volumeMounts:
+              - name: factorio-saves
+                mountPath: /factorio/saves
+      volumes:
+        - name: factorio-saves
+          persistentVolumeClaim:
+            claimName: {{ template "factorio.fullname" . }}-saves
+{{ end }}

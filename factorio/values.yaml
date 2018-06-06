@@ -8,16 +8,22 @@
 #   - factorio: Provides a Factorio multiplayer server
 operatingMode: "factorio"
 
-image:
-  repository: dtandersen/factorio
-  tag: stable
-  pullPolicy: IfNotPresent
+ftp:
+  image:
+    repository: stilliard/pure-ftpd
+    tag: hardened
+    pullPolicy: IfNotPresent
 
-ingress:
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: "factorio.noahh.io., factorio.noahhuppert.com."
-    kubernetes.io/ingress.class: "gce"
-  hosts:
-    - factorio.noahh.io
-    - factorio.noahhuppert.com
+factorio:
+  image:
+    repository: dtandersen/factorio
+    tag: stable
+    pullPolicy: IfNotPresent
 
+  ingress:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: "factorio.noahh.io., factorio.noahhuppert.com."
+      kubernetes.io/ingress.class: "gce"
+    hosts:
+      - factorio.noahh.io
+      - factorio.noahhuppert.com

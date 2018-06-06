@@ -1,29 +1,30 @@
+{{ if .Values.operatingMode == "factorio" }}
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: {{ template "factorio.fullname" . }}
+  name: {{ template "factorio.fullname" . }}-multiplayer-server
   labels:
-    app: {{ template "factorio.name" . }}
+    app: {{ template "factorio.name" . }}-multiplayer-server
     chart: {{ template "factorio.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   serviceName: {{ template "factorio.fullname" . }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
-      app: {{ template "factorio.name" . }}
+      app: {{ template "factorio.name" . }}-multiplayer-server
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "factorio.name" . }}
+        app: {{ template "factorio.name" . }}-multiplayer-server
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: {{ .Chart.Name }}-multiplayer-server
+          image: "{{ .Values.factorio.image.repository }}:{{ .Values.factorio.image.tag }}"
+          imagePullPolicy: {{ .Values.factorio.image.pullPolicy }}
           ports:
             - name: factorio-udp
               containerPort: 34197
@@ -38,17 +39,4 @@ spec:
         - name: factorio-saves
           persistentVolumeClaim:
             claimName: {{ template "factorio.fullname" . }}-saves
-  volumeClaimTemplates:
-  - metadata:
-      name: {{ template "factorio.fullname" . }}-saves
-      labels:
-        app: {{ template "factorio.name" . }}
-        chart: {{ template "factorio.chart" . }}
-        release: {{ .Release.Name }}
-        heritage: {{ .Release.Service }}
-    spec:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: "1Gi"
+{{ end }}

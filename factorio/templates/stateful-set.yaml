@@ -1,10 +1,9 @@
-{{ if eq .Values.operatingMode "factorio" }}
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: {{ template "factorio.fullname" . }}-multiplayer-server
+  name: {{ template "factorio.fullname" . }}
   labels:
-    app: {{ template "factorio.name" . }}-multiplayer-server
+    app: {{ template "factorio.name" . }}
     chart: {{ template "factorio.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -13,18 +12,18 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ template "factorio.name" . }}-multiplayer-server
+      app: {{ template "factorio.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "factorio.name" . }}-multiplayer-server
+        app: {{ template "factorio.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}-multiplayer-server
-          image: "{{ .Values.factorio.image.repository }}:{{ .Values.factorio.image.tag }}"
-          imagePullPolicy: {{ .Values.factorio.image.pullPolicy }}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: factorio-udp
               containerPort: 34197
@@ -39,4 +38,3 @@ spec:
         - name: factorio-saves
           persistentVolumeClaim:
             claimName: {{ template "factorio.fullname" . }}-saves
-{{ end }}

@@ -8,8 +8,14 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  metadata:
+    labels:
+      app: {{ template "factorio.name" . }}
+      release: {{ .Release.Name }}
+
   accessModes:
     - ReadWriteOnce
+
   resources:
     requests:
       storage: "1Gi"

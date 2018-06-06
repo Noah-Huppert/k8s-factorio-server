@@ -1,6 +1,5 @@
-.PHONY: ftp factorio build deploy rm
+.PHONY: all build deploy rm rm-orphaned
 
-MAKE=make
 NAMESPACE=factorio
 CHART_NAME=factorio
 
@@ -22,26 +21,19 @@ $(if $(findstring warn, $(1)), @printf "$(WARN_COLOR)[$(WARN_TAG)] $(2)$(NO_COLO
 $(if $(findstring error, $(1)), @printf "$(ERROR_COLOR)[$(ERROR_TAG)] $(2)$(NO_COLOR)\n")
 endef
 
-# ftp builds and deploys the chart with operating mode set to "ftp"
-ftp:
-	$(call log, ok, Starting FTP server)
-	"${MAKE}" build
-	"${MAKE}" HELM_ARGS="--set operatingMode=ftp" deploy
-
-# factorio builds and deploys the chart with operating mode set to "factorio"
-factorio:
-	$(call log, ok, Starting Factorio server)
-	"${MAKE}" build
-	"${MAKE}" HELM_ARGS="--set operatingMode=factorio" deploy
+# all builds and deploys the chart 
+all: build deploy
 
 # build packages the external dns chart
 build:
+	$(call log, ok, Building chart)
 	helm package .
 
 # deploy pushes the external dns chart to the kubernetes cluster
 # Args:
 #	- HELM_ARGS: Additional Helm upgrade arguments to pass to the command
 deploy: 
+	$(call log, ok, Deploying chart)
 	helm upgrade \
 		--debug \
 		--install \
@@ -50,4 +42,20 @@ deploy:
 
 # rm deletes the app deployment from the cluster
 rm: 
+	$(call log, ok, Deleting release)
 	helm delete --purge "${CHART_NAME}"
+
+# rm-orphaned removes all deployment resources manually in the event that they 
+# have been orphaned during a failed install
+rm-orphaned:
+	$(call log, ok, Deleting Stateful Set)
+	kubectl -n "${NAMESPACE}" delete statefulset "${CHART_NAME}" || true
+
+	$(call log, ok, Deleting Service)
+	kubectl -n "${NAMESPACE}" delete service "${CHART_NAME}" || true
+
+	$(call log, ok, Deleting Ingress)
+	kubectl -n "${NAMESPACE}" delete ingress "${CHART_NAME}" || true
+
+	$(call log, ok, Deleting Persistent Volume Claim)
+	kubectl -n "${NAMESPACE}" delete pvc "${CHART_NAME}-saves" || true

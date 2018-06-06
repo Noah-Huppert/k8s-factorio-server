@@ -1,32 +1,30 @@
-{{ if eq .Values.operatingMode "factorio" }}
 {{- $fullName := include "factorio.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app: {{ template "factorio.name" . }}-multiplayer-server
+    app: {{ template "factorio.name" . }}
     chart: {{ template "factorio.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-{{- with .Values.factorio.ingress.annotations }}
+{{- with .Values.ingress.annotations }}
   annotations:
 {{ toYaml . | indent 4 }}
 {{- end }}
 spec:
   rules:
-  {{- range .Values.factorio.ingress.hosts }}
+  {{- range .Values.ingress.hosts }}
     - host: {{ . }}
       http:
         paths:
           - backend:
-              serviceName: {{ $fullName }}-multiplayer-server
+              serviceName: {{ $fullName }}
               servicePort: udp
     - host: {{ . }}
       http:
         paths:
           - backend:
-              serviceName: {{ $fullName }}-multiplayer-server
+              serviceName: {{ $fullName }}
               servicePort: tcp
-  {{- end }}
-{{end}}
+  {{ end }}

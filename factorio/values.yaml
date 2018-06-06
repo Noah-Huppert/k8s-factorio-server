@@ -1,33 +1,12 @@
-# operatingMode: Function chart should provide
-#
-# Allows game saves to be loaded to / from the server and for those saves to 
-# be used in a Factorio multiplayer session.
-#
-# Valid values:
-#   - files: Provides an SSH server with access to the game saves directory
-#   - factorio: Provides a Factorio multiplayer server
-operatingMode: ""
+image:
+  repository: dtandersen/factorio
+  tag: stable
+  pullPolicy: IfNotPresent
 
-# files operating mode values
-files:
-  # Deployment docker image
-  image:
-    repository: bogem/ftp
-    tag: latest
-    pullPolicy: IfNotPresent
-
-# factorio operating mode values
-factorio:
-  # Stateful set deployment image
-  image:
-    repository: dtandersen/factorio
-    tag: stable
-    pullPolicy: IfNotPresent
-
-  ingress:
-    annotations:
-      external-dns.alpha.kubernetes.io/hostname: "factorio.noahh.io., factorio.noahhuppert.com."
-      kubernetes.io/ingress.class: "gce"
-    hosts:
-      - factorio.noahh.io
-      - factorio.noahhuppert.com
+ingress:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "factorio.noahh.io., factorio.noahhuppert.com."
+    kubernetes.io/ingress.class: "gce"
+  hosts:
+    - factorio.noahh.io
+    - factorio.noahhuppert.com

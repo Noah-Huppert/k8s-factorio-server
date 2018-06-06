@@ -22,15 +22,17 @@ $(if $(findstring warn, $(1)), @printf "$(WARN_COLOR)[$(WARN_TAG)] $(2)$(NO_COLO
 $(if $(findstring error, $(1)), @printf "$(ERROR_COLOR)[$(ERROR_TAG)] $(2)$(NO_COLOR)\n")
 endef
 
-# ftp builds and deploys the chart with operation mode set to "ftp"
+# ftp builds and deploys the chart with operating mode set to "ftp"
 ftp:
+	$(call log, ok, Starting FTP server)
 	"${MAKE}" build
-	"${MAKE}" HELM_ARGS="--set operationMode='ftp'" deploy
+	"${MAKE}" HELM_ARGS="--set operatingMode=ftp" deploy
 
-# factorio builds and deploys the chart with operation mode set to "factorio"
-ftp:
+# factorio builds and deploys the chart with operating mode set to "factorio"
+factorio:
+	$(call log, ok, Starting Factorio server)
 	"${MAKE}" build
-	"${MAKE}" HELM_ARGS="--set operationMode='factorio'" deploy
+	"${MAKE}" HELM_ARGS="--set operatingMode=factorio" deploy
 
 # build packages the external dns chart
 build:

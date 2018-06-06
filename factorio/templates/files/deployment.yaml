@@ -1,4 +1,4 @@
-{{ if .Values.operatingMode == "ftp" }}
+{{ if eq .Values.operatingMode "ftp" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,9 +25,11 @@ spec:
           name: {{ .Chart.Name }}-ftp-server
           env:
             - name: FTP_USER
-              value: {{ .Values.ftp.ftp.username  }}
+              value: {{ .Values.ftp.ftp.username }}
             - name: FTP_PASS
               value: {{ .Values.ftp.ftp.password }}
+            - name: LOG_STDOUT
+              value: "true"
           ports:
             - containerPort: 21
               name: ftp

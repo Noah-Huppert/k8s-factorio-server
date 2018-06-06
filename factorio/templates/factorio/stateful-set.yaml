@@ -1,4 +1,4 @@
-{{ if .Values.operatingMode == "factorio" }}
+{{ if eq .Values.operatingMode "factorio" }}
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:

@@ -4,17 +4,21 @@
 # be used in a Factorio multiplayer session.
 #
 # Valid values:
-#   - ftp: Provides an FTP server with access to the game saves directory
+#   - files: Provides an SSH server with access to the game saves directory
 #   - factorio: Provides a Factorio multiplayer server
-operatingMode: "factorio"
+operatingMode: ""
 
-ftp:
+# files operating mode values
+files:
+  # Deployment docker image
   image:
-    repository: stilliard/pure-ftpd
-    tag: hardened
+    repository: bogem/ftp
+    tag: latest
     pullPolicy: IfNotPresent
 
+# factorio operating mode values
 factorio:
+  # Stateful set deployment image
   image:
     repository: dtandersen/factorio
     tag: stable

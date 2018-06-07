@@ -22,7 +22,7 @@ make
 ```
 
 # Finding The Factorio Pod Name
-To find the name of the pod running your Factorio server run:
+To find the name of the pod running your Factorio server execute:
 
 ```
 kubectl -n factorio get pods
@@ -31,8 +31,7 @@ kubectl -n factorio get pods
 # Accessing Factorio Data
 The container which runs the Factorio server stores data in `/factorio`.  
 
-The `kubectl cp` command can be used to transfer save and / or mod files to 
-the server:
+The `kubectl cp` command can be used to transfer files to / from the server:
 
 ## Save File Example
 Example of transferring a save file to the server:

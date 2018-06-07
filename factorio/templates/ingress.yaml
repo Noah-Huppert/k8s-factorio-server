@@ -20,11 +20,11 @@ spec:
         paths:
           - backend:
               serviceName: {{ $fullName }}
-              servicePort: udp
+              servicePort: 34197
     - host: {{ . }}
       http:
         paths:
           - backend:
               serviceName: {{ $fullName }}
-              servicePort: tcp
+              servicePort: 27015
   {{ end }}

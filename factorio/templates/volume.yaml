@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ template "factorio.fullname" . }}-saves
+  name: {{ template "factorio.fullname" . }}-data
   labels:
     app: {{ template "factorio.name" . }}
     chart: {{ template "factorio.chart" . }}

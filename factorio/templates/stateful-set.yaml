@@ -32,9 +32,11 @@ spec:
               containerPort: 27015
               protocol: TCP
           volumeMounts:
-            - name: factorio-saves
-              mountPath: /factorio/saves
+            - name: factorio-data
+              mountPath: /factorio
+          securityContext:
+            runAsUser: 0
       volumes:
-        - name: factorio-saves
+        - name: factorio-data
           persistentVolumeClaim:
-            claimName: {{ template "factorio.fullname" . }}-saves
+            claimName: {{ template "factorio.fullname" . }}-data
